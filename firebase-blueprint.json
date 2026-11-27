@@ -1,0 +1,265 @@
+{
+  "entities": {
+    "Tenant": {
+      "title": "Tenant",
+      "description": "Enterprise tenant workspace partition",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "slug": { "type": "string" },
+        "domain": { "type": "string" },
+        "plan": { "type": "string" },
+        "status": { "type": "string" },
+        "currency": { "type": "string" },
+        "timezone": { "type": "string" },
+        "totalEmployees": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "monthlyBilling": { "type": "number" },
+        "whatsappNumber": { "type": "string" },
+        "whatsappEnabled": { "type": "boolean" },
+        "chatbotEnabled": { "type": "boolean" },
+        "chatbotTemplates": { "type": "array" },
+        "chatbotAskedLog": { "type": "array" }
+      },
+      "required": ["id", "name", "plan", "status"]
+    },
+    "User": {
+      "title": "User",
+      "description": "Employee or administrator corporate persona",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "tenantId": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "avatar": { "type": "string" },
+        "role": { "type": "string" },
+        "title": { "type": "string" },
+        "department": { "type": "string" },
+        "employeeCode": { "type": "string" },
+        "phone": { "type": "string" },
+        "joinDate": { "type": "string" },
+        "salaryBase": { "type": "number" },
+        "status": { "type": "string" },
+        "isAppOwner": { "type": "boolean" },
+        "companySuperAdminTenantId": { "type": "string" }
+      },
+      "required": ["id", "tenantId", "name", "email", "role"]
+    },
+    "AttendanceRecord": {
+      "title": "AttendanceRecord",
+      "description": "Biometric and geofenced employee attendance clock-in record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "tenantId": { "type": "string" },
+        "employeeId": { "type": "string" },
+        "employeeName": { "type": "string" },
+        "department": { "type": "string" },
+        "date": { "type": "string" },
+        "checkIn": { "type": "string" },
+        "checkOut": { "type": "string" },
+        "status": { "type": "string" },
+        "workHours": { "type": "number" },
+        "location": { "type": "string" },
+        "ipAddress": { "type": "string" },
+        "officeLocationVerified": { "type": "boolean" },
+        "officeCampus": { "type": "string" }
+      },
+      "required": ["id", "tenantId", "employeeId", "date", "checkIn"]
+    },
+    "LeaveRequest": {
+      "title": "LeaveRequest",
+      "description": "Employee time-off application and approval request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "tenantId": { "type": "string" },
+        "employeeId": { "type": "string" },
+        "employeeName": { "type": "string" },
+        "department": { "type": "string" },
+        "leaveType": { "type": "string" },
+        "startDate": { "type": "string" },
+        "endDate": { "type": "string" },
+        "days": { "type": "number" },
+        "reason": { "type": "string" },
+        "status": { "type": "string" },
+        "appliedOn": { "type": "string" }
+      },
+      "required": ["id", "tenantId", "employeeId", "leaveType", "startDate", "endDate", "status"]
+    },
+    "PayrollCycle": {
+      "title": "PayrollCycle",
+      "description": "Monthly payroll processing cycle and statutory deductions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "tenantId": { "type": "string" },
+        "month": { "type": "string" },
+        "monthKey": { "type": "string" },
+        "periodStart": { "type": "string" },
+        "periodEnd": { "type": "string" },
+        "status": { "type": "string" },
+        "totalGross": { "type": "number" },
+        "totalDeductions": { "type": "number" },
+        "totalNet": { "type": "number" },
+        "employeeCount": { "type": "number" }
+      },
+      "required": ["id", "tenantId", "month", "status"]
+    },
+    "AppNotification": {
+      "title": "AppNotification",
+      "description": "Tenant-isolated corporate broadcast and workflow notification",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "tenantId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "time": { "type": "string" },
+        "read": { "type": "boolean" },
+        "category": { "type": "string" },
+        "priority": { "type": "string" },
+        "targetView": { "type": "string" }
+      },
+      "required": ["id", "tenantId", "title", "read"]
+    },
+    "ClientDemoBooking": {
+      "title": "ClientDemoBooking",
+      "description": "Client demo requests, leads, SMS/WhatsApp dispatches, owner emails, and 14-day trial activations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fullName": { "type": "string" },
+        "workEmail": { "type": "string" },
+        "companyOwnerEmail": { "type": "string" },
+        "companyOwnerName": { "type": "string" },
+        "phone": { "type": "string" },
+        "messageChannel": { "type": "string" },
+        "companyName": { "type": "string" },
+        "preferredDate": { "type": "string" },
+        "preferredTimeSlot": { "type": "string" },
+        "linkedTenantId": { "type": "string" },
+        "status": { "type": "string" },
+        "verificationToken": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "workEmail", "companyName", "status"]
+    }
+  },
+  "firestore": {
+    "/tenants/{tenantId}": {
+      "schema": "Tenant",
+      "description": "Multi-tenant company workspace configurations"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Employee and administrator profiles"
+    },
+    "/attendance/{recordId}": {
+      "schema": "AttendanceRecord",
+      "description": "Biometric and geofenced attendance punches"
+    },
+    "/leaves/{leaveId}": {
+      "schema": "LeaveRequest",
+      "description": "Time-off requests and approvals"
+    },
+    "/payroll_cycles/{cycleId}": {
+      "schema": "PayrollCycle",
+      "description": "Monthly payroll cycles"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "AppNotification",
+      "description": "Company-isolated notifications"
+    },
+    "/demo_bookings/{bookingId}": {
+      "schema": "ClientDemoBooking",
+      "description": "Client demo and trial requests"
+    },
+    "/payslips/{payslipId}": {
+      "schema": "PayrollCycle",
+      "description": "Generated employee payslips"
+    },
+    "/jobs/{jobId}": {
+      "schema": "Tenant",
+      "description": "Company-isolated job requisitions"
+    },
+    "/candidates/{candidateId}": {
+      "schema": "User",
+      "description": "ATS candidates synced across devices"
+    },
+    "/expenses/{expenseId}": {
+      "schema": "LeaveRequest",
+      "description": "Employee expense claims and approvals"
+    },
+    "/tickets/{ticketId}": {
+      "schema": "AppNotification",
+      "description": "Internal HR and IT helpdesk tickets"
+    },
+    "/assets/{assetId}": {
+      "schema": "Tenant",
+      "description": "Hardware and IT asset inventory"
+    },
+    "/performance_goals/{goalId}": {
+      "schema": "Tenant",
+      "description": "Departmental OKRs and performance goals"
+    },
+    "/saas_billings/{billingId}": {
+      "schema": "Tenant",
+      "description": "SaaS tenant subscription billing ledger"
+    },
+    "/dispatched_emails/{emailId}": {
+      "schema": "ClientDemoBooking",
+      "description": "Dynamic onboarding and trial activation emails"
+    },
+    "/audit_logs/{logId}": {
+      "schema": "AppNotification",
+      "description": "Enterprise audit logs"
+    },
+    "/deleted_ids/{tombstoneId}": {
+      "schema": "Tenant",
+      "description": "Deletion tombstones preventing stale device caches from resurrecting deleted records"
+    },
+    "/shifts/{shiftId}": {
+      "schema": "Tenant",
+      "description": "Company-isolated shift templates and weekly shift roster assignments"
+    },
+    "/employee_documents/{docId}": {
+      "schema": "AppNotification",
+      "description": "Employee document vault (Offer Letters, ID verification, Form 16, NDAs, Policies)"
+    },
+    "/onboarding_tasks/{taskId}": {
+      "schema": "AppNotification",
+      "description": "Employee onboarding and offboarding lifecycle checklist tasks"
+    },
+    "/interviews/{interviewId}": {
+      "schema": "AppNotification",
+      "description": "Scheduled recruitment interview rounds and evaluation scorecards"
+    },
+    "/offer_letters/{offerId}": {
+      "schema": "PayrollCycle",
+      "description": "Candidate offer letters and digital onboarding conversion records"
+    },
+    "/performance_reviews/{reviewId}": {
+      "schema": "AppNotification",
+      "description": "Structured self, manager, and 360-degree performance appraisal reviews"
+    },
+    "/continuous_feedback/{feedbackId}": {
+      "schema": "AppNotification",
+      "description": "Continuous peer kudos, constructive feedback, and Performance Improvement Plans (PIP)"
+    },
+    "/announcements/{announcementId}": {
+      "schema": "AppNotification",
+      "description": "Company announcements, policy updates, and read acknowledgments"
+    },
+    "/enps_surveys/{responseId}": {
+      "schema": "AppNotification",
+      "description": "Employee Net Promoter Score (eNPS) and workplace pulse survey responses"
+    },
+    "/employee_loans/{loanId}": {
+      "schema": "PayrollCycle",
+      "description": "Employee salary advances, loans, and EMI repayment schedules"
+    }
+  }
+}

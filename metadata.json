@@ -1,0 +1,6 @@
+{
+  "name": "NattonFlow HR - Enterprise HRMS with Verified Client Demo & RBAC",
+  "description": "Multi-tenant Human Resource Management System with genuine client demo booking, anti-dummy email verification, role-based access control (RBAC), and full requirement specification document.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

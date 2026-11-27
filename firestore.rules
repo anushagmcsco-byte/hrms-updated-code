@@ -1,0 +1,218 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions for structural validation across all HRMS collections
+    function isValidDocId(docId) {
+      return docId is string && docId.size() > 0 && docId.size() <= 150;
+    }
+
+    function isValidPayload() {
+      return request.resource != null && request.resource.data is map && request.resource.data.keys().size() <= 100;
+    }
+
+    function isValidTenantCreate() {
+      return isValidPayload()
+        && request.resource.data.id is string && request.resource.data.id.size() > 0 && request.resource.data.id.size() <= 150
+        && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 200;
+    }
+
+    function isValidBillingCreate() {
+      return isValidPayload()
+        && request.resource.data.id is string && request.resource.data.id.size() > 0 && request.resource.data.id.size() <= 150
+        && request.resource.data.companyName is string && request.resource.data.companyName.size() > 0 && request.resource.data.companyName.size() <= 200;
+    }
+
+    function isValidUserCreate() {
+      return isValidPayload()
+        && request.resource.data.id is string && request.resource.data.id.size() > 0 && request.resource.data.id.size() <= 150
+        && request.resource.data.email is string && request.resource.data.email.size() > 0 && request.resource.data.email.size() <= 200;
+    }
+
+    // Core multi-tenant organization & platform collections
+    match /tenants/{tenantId} {
+      allow read: if true;
+      allow create: if isValidDocId(tenantId) && isValidTenantCreate();
+      allow update: if isValidDocId(tenantId) && isValidPayload();
+      allow delete: if isValidDocId(tenantId);
+    }
+
+    match /saas_billings/{billingId} {
+      allow read: if true;
+      allow create: if isValidDocId(billingId) && isValidBillingCreate();
+      allow update: if isValidDocId(billingId) && isValidPayload();
+      allow delete: if isValidDocId(billingId);
+    }
+
+    match /users/{userId} {
+      allow read: if true;
+      allow create: if isValidDocId(userId) && isValidUserCreate();
+      allow update: if isValidDocId(userId) && isValidPayload();
+      allow delete: if isValidDocId(userId);
+    }
+
+    // Operational HRMS collections
+    match /attendance/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /leaves/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /payroll_cycles/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /payslips/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /jobs/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /candidates/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /expenses/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /tickets/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /assets/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /performance_goals/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /dispatched_emails/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /notifications/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /demo_bookings/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /audit_logs/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    // Extended HRMS module collections
+    match /shifts/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /employee_documents/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /onboarding_tasks/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /interviews/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /offer_letters/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /performance_reviews/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /continuous_feedback/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /announcements/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /enps_surveys/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /employee_loans/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    // System sync, bootstrap & deletion tombstone collections
+    match /deleted_ids/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /meta/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+
+    match /test/{docId} {
+      allow read: if true;
+      allow create, update: if isValidDocId(docId) && isValidPayload();
+      allow delete: if isValidDocId(docId);
+    }
+  }
+}
